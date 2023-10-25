@@ -1,68 +1,50 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-  }
-  
-  #app {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  header h1 {
-    margin: 0;
-  }
-  
-  button {
-    background-color: #2ecc71;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  #chat {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  #messages {
-    background-color: #ecf0f1;
-    padding: 10px;
-    border-radius: 3px;
-    min-height: 200px;
-    overflow-y: auto;
-  }
-  
-  #messageInput {
-    margin-top: 10px;
-    padding: 5px;
-  }
-  
-  #sendButton {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
+/* Estilo para la vista del chat con área de mensajes de tamaño fijo */
+.chat-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.message-container {
+  max-height: 300px; /* Altura máxima del área de mensajes */
+  overflow-y: scroll; /* Habilita el scroll si hay demasiados mensajes */
+}
+
+.message-list {
+  list-style: none;
+  padding: 0;
+  /* Establece una altura fija para el área de mensajes */
+  height: 250px;
+}
+
+.message {
+  background-color: #f0f0f0;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.message-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.send-button, .create-key-button {
+  display: block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.send-button:hover, .create-key-button:hover {
+  background-color: #0056b3;
+}
