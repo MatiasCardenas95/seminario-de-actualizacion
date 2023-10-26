@@ -1,21 +1,32 @@
-/* Estilo para la vista del chat con área de mensajes de tamaño fijo */
-.chat-container {
-  max-width: 400px;
+/* Estilo para vista del chat en el lado derecho */
+.chat-container.right {
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  float: right; /* Alinea a la derecha */
 }
 
+/* Estilo para vista del chat en el lado izquierdo */
+.chat-container.left {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  float: left; /* Alinea a la izquierda */
+}
+
+
 .message-container {
-  max-height: 300px; /* Altura máxima del área de mensajes */
-  overflow-y: scroll; /* Habilita el scroll si hay demasiados mensajes */
+  max-height: 300px; 
+  overflow-y: scroll; 
 }
 
 .message-list {
   list-style: none;
   padding: 0;
-  /* Establece una altura fija para el área de mensajes */
   height: 250px;
 }
 

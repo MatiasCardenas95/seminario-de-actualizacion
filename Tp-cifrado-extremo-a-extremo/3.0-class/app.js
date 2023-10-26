@@ -1,21 +1,30 @@
-class ChatModel {
-  constructor() {
+/////////////////MVC CLASSS CHAT//////////////////////////////////////////
+
+class ChatModel 
+{
+  constructor() 
+  {
     this.messages = [];
   }
 
-  addMessage(origin, message) {
+  addMessage(origin, message) 
+  {
     this.messages.push({ origin, message });
   }
 
-  getMessages() {
+  getMessages() 
+  {
     return this.messages;
   }
 }
 
-class ChatView {
-  constructor(username) {
+class ChatView 
+{
+  //Posible modificacion a futuro de parametros del nombre y ubicacion a la vista
+  constructor(username, isRightSide) 
+  {
     this.container = document.createElement('div');
-    this.container.className = 'chat-container';
+    this.container.className = isRightSide ? 'chat-container right' : 'chat-container left';
 
     this.messageContainer = document.createElement('div');
     this.messageContainer.className = 'message-container';
@@ -49,30 +58,37 @@ class ChatView {
     document.body.appendChild(this.container);
   }
 
-  render(messages) {
-    this.messageList.innerHTML = '';
-
-    messages.forEach((message) => {
-      const listItem = document.createElement('li');
-      listItem.className = 'message';
-      listItem.textContent = `[${message.origin}]: ${message.message}`;
-      this.messageList.appendChild(listItem);
-    });
+render(messages)
+{
+  // Limpia la lista de mensajes
+  while (this.messageList.firstChild) {
+    this.messageList.removeChild(this.messageList.firstChild);
   }
 
-  getInput() {
+  messages.forEach((message) => {
+    const listItem = document.createElement('li');
+    const text = document.createTextNode(`[${message.origin}]: ${message.message}`);
+    listItem.appendChild(text);
+    this.messageList.appendChild(listItem);
+  });
+}
+
+  getInput() 
+  {
     return this.inputBox.value;
   }
 
-  clearInput() {
+  clearInput() 
+  {
     this.inputBox.value = '';
   }
 }
 
-
-
-class ChatController {
-  constructor(model, view1, view2, user1, user2, chatServer) {
+class ChatController 
+{
+  //Simulacion de Chat entre dos usuarios, con sus vistas, y el server...... a modificar
+  constructor(model, view1, view2, user1, user2, chatServer) 
+  {
     this.model = model;
     this.view1 = view1;
     this.view2 = view2;
@@ -90,104 +106,144 @@ class ChatController {
     this.updateView();
   }
 
-  async createSharedKey() {
-    try {
+  async createSharedKey() 
+  {
+    try 
+    {
       const sharedKey = await this.chatServer.createSharedKey();
-      if (sharedKey) {
+      if (sharedKey) 
+      {
         this.user1.sharedKey = sharedKey;
         this.user2.sharedKey = sharedKey;
         console.log('Clave compartida creada y asignada a ambos usuarios exitosamente');
-      } else {
+      } 
+
+      else 
+      {
         console.error('Error al crear la clave compartida');
       }
-    } catch (error) {
+    } 
+
+    catch (error) 
+    {
       console.error('Error al crear la clave compartida:', error);
     }
   }
 
-  async sendMessage(user, event) {
+  async sendMessage(user, event) 
+  {
     const message = user === this.user1 ? this.view1.getInput() : this.view2.getInput();
     if (message.trim() === '') return;
 
-    if (!user.sharedKey) {
+    if (!user.sharedKey) 
+    {
       console.error('Clave compartida no disponible. Debes iniciar la conversación primero.');
       return;
     }
 
-    try {
+    try 
+    {
       const encryptedMessage = await this.chatServer.encryptData(user.sharedKey, message);
       this.chatServer.sendMessage(user.username, user === this.user1 ? this.user2.username : this.user1.username, encryptedMessage);
       console.log(`Mensaje encriptado y enviado exitosamente por ${user.username}`);
-    } catch (error) {
+    } 
+
+    catch (error) 
+    {
       console.error(`Error al enviar el mensaje encriptado por ${user.username}:`, error);
     }
 
-    if (user === this.user1) {
+    if (user === this.user1) 
+    {
       this.view1.clearInput();
-    } else {
+    } 
+    else 
+    {
       this.view2.clearInput();
     }
 
     this.updateView();
   }
 
-  receiveMessage(event) {
+  receiveMessage(event) 
+  {
     const { origin, target, message, iv } = event.detail;
-
-    if (target === this.user1.username) {
+  
+    if (target === this.user1.username) 
+    {
       const view = this.view1;
-      this.decryptAndDisplayMessage(this.user1, message, view, iv);
-    } else if (target === this.user2.username) {
+      this.decryptAndDisplayMessage(this.user1, origin, message, view, iv);
+    } 
+    
+    else if (target === this.user2.username) 
+    {
       const view = this.view2;
-      this.decryptAndDisplayMessage(this.user2, message, view, iv);
+      this.decryptAndDisplayMessage(this.user2, origin, message, view, iv);
     }
   }
-
-  async decryptAndDisplayMessage(user, encryptedMessage, view, iv) {
-    if (!user.sharedKey) {
+  
+  async decryptAndDisplayMessage(user, origin, encryptedMessage, view, iv) 
+  {
+    if (!user.sharedKey) 
+    {
       console.error('Clave compartida no disponible para desencriptar el mensaje.');
       return;
     }
-
-    try {
+  
+    try 
+    {
       const decryptedMessage = await this.chatServer.decryptData(user.sharedKey, encryptedMessage, iv);
-      this.model.addMessage(user.username, decryptedMessage);
+      this.model.addMessage(origin, decryptedMessage);
       this.updateView();
       console.log(`Mensaje desencriptado y recibido por ${user.username}`);
       view.render(this.model.getMessages());
-    } catch (error) {
+    } 
+
+    catch (error) 
+    {
       console.error(`Error al desencriptar y mostrar el mensaje para ${user.username}:`, error);
     }
   }
+  
 
-  updateView() {
+  updateView() 
+  {
     this.view1.render(this.model.getMessages());
     this.view2.render(this.model.getMessages());
   }
 }
 
-class User {
-  constructor(username) {
+//////////CLass User//////////////////////
+class User 
+{
+  constructor(username) 
+  {
     this.username = username;
     this.sharedKey = null;
   }
 }
 
-class ChatServer extends HTMLElement {
-  constructor() {
+/////////Class Server///////////////////////
+class ChatServer extends HTMLElement 
+{
+  constructor() 
+  {
     super();
     this.sharedKey = null;
   }
 
-  sendMessage(origin, target, message) {
+  sendMessage(origin, target, message) 
+  {
     const messageEvent = new CustomEvent('message', {
       detail: { origin, target, message },
     });
     this.dispatchEvent(messageEvent);
   }
 
-  async createSharedKey() {
-    try {
+  async createSharedKey() 
+  {
+    try 
+    {
       this.sharedKey = await window.crypto.subtle.generateKey(
         {
           name: 'AES-GCM',
@@ -196,16 +252,20 @@ class ChatServer extends HTMLElement {
         true,
         ['encrypt', 'decrypt']
       );
-      console.log('Clave compartida creada correctamente');
+
       return this.sharedKey;
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error('Error generating AES shared key:', error);
       return null;
     }
   }
 
-  async encryptData(key, text) {
-    try {
+  async encryptData(key, text) 
+  {
+    try 
+    {
       const encodedText = new TextEncoder().encode(text);
       const iv = window.crypto.getRandomValues(new Uint8Array(12));
       const encryptedText = await window.crypto.subtle.encrypt(
@@ -218,14 +278,19 @@ class ChatServer extends HTMLElement {
       );
 
       return { encryptedText, iv };
-    } catch (error) {
+    } 
+
+    catch (error) 
+    {
       console.error('Error encrypting data:', error);
       return null;
     }
   }
 
-  async decryptData(key, { encryptedText, iv }) {
-    try {
+  async decryptData(key, { encryptedText, iv }) 
+  {
+    try 
+    {
       const decryptedText = await window.crypto.subtle.decrypt(
         {
           name: 'AES-GCM',
@@ -236,7 +301,10 @@ class ChatServer extends HTMLElement {
       );
       const decodedText = new TextDecoder().decode(decryptedText);
       return decodedText;
-    } catch (error) {
+    } 
+    
+    catch (error) 
+    {
       console.error('Error decrypting data:', error);
       return null;
     }
@@ -245,11 +313,12 @@ class ChatServer extends HTMLElement {
 
 customElements.define('chat-server', ChatServer);
 
-const view1 = new ChatView('Usuario1');
-const view2 = new ChatView('Usuario2');
 
-const user1 = new User('Usuario1');
-const user2 = new User('Usuario2');
+const view1 = new ChatView('Matias', false); 
+const view2 = new ChatView('Maximiliano', true); 
+
+const user1 = new User('Matias');
+const user2 = new User('Maximiliano');
 const chatServer = new ChatServer();
 
 const chatModel = new ChatModel();
