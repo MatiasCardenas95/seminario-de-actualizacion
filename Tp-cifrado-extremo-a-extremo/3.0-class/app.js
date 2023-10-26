@@ -40,9 +40,9 @@ class ChatView
     this.sendButton.className = 'send-button';
     this.sendButton.textContent = 'Enviar';
 
-    this.createKeyButton = document.createElement('button');
-    this.createKeyButton.className = 'create-key-button';
-    this.createKeyButton.textContent = 'Iniciar Conversación';
+    this.initConversationButton = document.createElement('button');
+    this.initConversationButton.className = 'init-conversation-button';
+    this.initConversationButton.textContent = 'Iniciar Conversación';
 
     this.usernameLabel = document.createElement('div');
     this.usernameLabel.className = 'username-label';
@@ -53,7 +53,7 @@ class ChatView
     this.container.appendChild(this.messageContainer);
     this.container.appendChild(this.inputBox);
     this.container.appendChild(this.sendButton);
-    this.container.appendChild(this.createKeyButton);
+    this.container.appendChild(this.initConversationButton);
 
     document.body.appendChild(this.container);
   }
@@ -98,8 +98,8 @@ class ChatController
 
     this.view1.sendButton.addEventListener('click', this.sendMessage.bind(this, user1));
     this.view2.sendButton.addEventListener('click', this.sendMessage.bind(this, user2));
-    this.view1.createKeyButton.addEventListener('click', this.createSharedKey.bind(this));
-    this.view2.createKeyButton.style.display = 'none';
+    this.view1.initConversationButton.addEventListener('click', this.createSharedKey.bind(this));
+    this.view2.initConversationButton.style.display = 'none';
 
     this.chatServer.addEventListener('message', this.receiveMessage.bind(this));
 
