@@ -1,43 +1,49 @@
 /* Estilo para vista del chat en el lado derecho */
-.chat-container.right {
+.chat-container.right 
+{
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  float: right; /* Alinea a la derecha */
+  float: right; 
 }
 
 /* Estilo para vista del chat en el lado izquierdo */
-.chat-container.left {
+.chat-container.left 
+{
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  float: left; /* Alinea a la izquierda */
+  float: left; 
 }
 
 
-.message-container {
+.message-container 
+{
   max-height: 300px; 
   overflow-y: scroll; 
 }
 
-.message-list {
+.message-list 
+{
   list-style: none;
   padding: 0;
   height: 250px;
 }
 
-.message {
+.message 
+{
   background-color: #f0f0f0;
   padding: 5px;
   margin: 5px 0;
   border-radius: 5px;
 }
 
-.message-input {
+.message-input 
+{
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -45,7 +51,8 @@
   border-radius: 5px;
 }
 
-.send-button, .init-conversation-button {
+.send-button, .init-conversation-button 
+{
   display: block;
   margin-top: 10px;
   padding: 10px 20px;
@@ -56,6 +63,7 @@
   cursor: pointer;
 }
 
-.send-button:hover, .init-conversation-button:hover {
+.send-button:hover, .init-conversation-button:hover 
+{
   background-color: #0056b3;
 }
